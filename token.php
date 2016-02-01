@@ -64,27 +64,34 @@ else{
 		echo json_encode(array('error' => $error,'error_description ' => $error_description));
 	}
 	else{
-		//good job
-		// $_SESSION['oauth'] = $_REQUEST;
-
-			// $token = $server->checkReadyCode($client_id,$_SESSION['user_id']);
-
-		
 			$params = array();
-			$token = $server->generateToken();
-			if($server->addToken($token,$client_id,'3')){
+			$data = $server->getStorage()->data("SELECT * FROM code WHERE id = '$code'");
+			$user_id = $data['user_id'];
+			$token = $server->checkReadyToken($client_id,$user_id);
+			if($token){
 				$params = array(
-							'access_token' => $token,
-							'refresh_token' => null,
-							'token_type' => 'bear',
-							'expire_at' => time()+Server::TOKEN_EXPIRE
-							);
+								'access_token' => $token['id'],
+								'refresh_token' => null,
+								'token_type' => 'bear',
+								'expire_at' => $token['expire']
+								);
 			}
 			else{
-				$params = array(
-							'error' => 'error encored',
-							'error_description' => 'an error has encored'
-							);
+				$token = $server->generateToken();
+				if($server->addToken($token,$client_id,$user_id)){
+					$params = array(
+								'access_token' => $token,
+								'refresh_token' => null,
+								'token_type' => 'bear',
+								'expire_at' => time()+Server::TOKEN_EXPIRE
+								);
+				}
+				else{
+					$params = array(
+								'error' => 'error encored',
+								'error_description' => 'an error has encored'
+								);
+				}
 			}
 			header('content-type:application/json');
 			echo json_encode($params);

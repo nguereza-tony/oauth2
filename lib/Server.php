@@ -18,6 +18,10 @@ class Server {
 		$this->storage = $storage;
 	}
 	
+	public function getStorage(){
+		return $this->storage;
+	}
+	
 	public function addGrant(GrantInterface $grant){
 		if(!in_array($grant->name(), $this->grants)){
 			$this->grants[] = $grant->name();
