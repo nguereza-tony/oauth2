@@ -78,6 +78,10 @@ class Server {
 		return $this->servers;
 	}
 	
+	public function getRequests(){
+		return $this->requests;
+	}
+	
 	public function addClient(Client $client){
 		return $this->storage->execute('INSERT INTO client(id,secret,name,redirect_url,user_id,description) VALUES ("'.$client->getId().'" , "'.$client->getSecret().'" ,"'.$client->getName().'" ,"'.$client->getRedirectUrl().'" ,"'.$client->getUserId().'","'.$client->getDescription().'")');
 	}
