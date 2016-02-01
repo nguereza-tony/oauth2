@@ -1,7 +1,7 @@
 <?php
 
 class Server {
-	const CODE_EXPIRE = 600 ; //in second
+	const CODE_EXPIRE = 3600 ; //in second
 	const TOKEN_EXPIRE = 3600 ; //in second
 	protected $storage = null;
 	protected $grants = array();
@@ -111,7 +111,7 @@ class Server {
 	}
 	
 	public function checkClient($id,$secret){
-		return $this->storage->count("SELECT * FROM client WHERE id = '$id' AND secret = '$secret' ");
+		return $this->storage->count("SELECT * FROM client WHERE id = '$id' AND secret = '".sha1($secret)."' ");
 	}
 	
 	public function checkUser($username,$password){

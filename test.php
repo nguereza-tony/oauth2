@@ -3,12 +3,16 @@ require_once('config.php');
 
 
 
-
+try{
 $pi = new PI(array(
 					'appId' => '259337193970440' , 
 					'appSecret' => '7tbd501mt5bnnylb1u7mld4vhkwc25zrmlvxodcavob1m3rbm8',
 				));
 
+}catch(Exception $e){
+	echo $e->getMessage();
+	$pi = null;
+}
 
 $code = $pi->getAuthorizationCode();
 

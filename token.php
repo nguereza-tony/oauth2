@@ -5,7 +5,7 @@ header('content-type : application/json');
 }
 else{
 	require_once('config.php');
-	echo json_encode(implode('_',$_REQUEST));
+
 	
 	$error = null;
 	$error_description = null;
@@ -15,7 +15,7 @@ else{
 	$redirect_uri = $server->request('redirect_uri');
 	$code = $server->request('code');
 
-
+	
 	if(!$grant_type){
 		$error = 'invalid request';
 		$error_description = 'missing parameter grant_type';
@@ -37,7 +37,7 @@ else{
 		$error = 'invalid parameter';
 		$error_description = 'invalid client_id';
 	}
-	 else if(!$server->checkClient($client_id ,sha1($client_secret))){
+	 else if(!$server->checkClient($client_id ,$client_secret)){
 		$error = 'invalid client credential';
 		$error_description = 'the client id and client secret do not match';
 	}
@@ -86,10 +86,9 @@ else{
 							'error_description' => 'an error has encored'
 							);
 			}
-			// header('content-type:application/json');
+			header('content-type:application/json');
 			echo json_encode($params);
 		}
-			
 		
 	}
 	
