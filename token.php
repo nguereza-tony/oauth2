@@ -1,10 +1,11 @@
 <?php
-if($_SERVER['REQUEST_METHOD'] != 'POST'){
+require_once('config.php');
+if($server->server('REQUEST_METHOD') != 'POST'){
 header('content-type : application/json');
 	echo json_encode(array('error' => ' invalid request' ,'error_description ' => ' you must use POST method to get an access token' ));
 }
 else{
-	require_once('config.php');
+	
 
 	
 	$error = null;

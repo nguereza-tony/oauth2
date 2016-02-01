@@ -6,6 +6,7 @@ class Server {
 	protected $storage = null;
 	protected $grants = array();
 	protected $requests = array();
+	protected $servers = array();
 	protected $responses = array();
 	protected $scopes = array();
 	
@@ -60,6 +61,7 @@ class Server {
 	
 	public function run(){
 		$this->requests = $_REQUEST;
+		$this->servers = $_SERVER;
 		$this->deleteExpireToken(time());
 		$this->deleteExpireCode(time());
 	}
@@ -67,9 +69,13 @@ class Server {
 	public function request($name){
 		return isset($this->requests[$name])?$this->requests[$name]:null;
 	}
+	
+	public function server($name){
+		return isset($this->servers[$name])?$this->servers[$name]:null;
+	}
 
-	public function getRequests(){
-		return $this->requests;
+	public function getServers(){
+		return $this->servers;
 	}
 	
 	public function addClient(Client $client){
