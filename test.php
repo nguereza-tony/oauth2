@@ -25,7 +25,7 @@ else{
 	if(isset($token['access_token'])){
 		$pi->setAccessToken($token['access_token'] );
 		$result = $pi->get('data');
-		var_dump( $token);
+		var_dump( $result);
 	}
 	else{
 		
