@@ -19,7 +19,7 @@
 		const SIGNED_REQUEST_ALGORITHM = 'sha256';
 		
 		protected static $domain_maps = array(
-												'data' => 'http://localhost/test/oauth2server/ressource.php',
+												'user' => 'http://localhost/test/oauth2server/user.php',
 												'token' => 'http://localhost/test/oauth2server/token.php',
 												'code' => 'http://localhost/test/oauth2server/code.php',
 											);

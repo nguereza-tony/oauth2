@@ -24,7 +24,7 @@ else{
 	$token = $pi->getAuthorizationAccessToken($code);
 	if(isset($token['access_token'])){
 		$pi->setAccessToken($token['access_token'] );
-		$result = $pi->get('data');
+		$result = $pi->get('user');
 		var_dump( $result);
 	}
 	else{
