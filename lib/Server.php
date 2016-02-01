@@ -85,8 +85,8 @@ class Server {
 		return $this->storage->execute('INSERT INTO code(id,expire,client_id,user_id,scope) VALUES ("'.$code.'" , "'.(time() + self::CODE_EXPIRE).'" ,"'.$client_id.'" ,"'.$user_id.'", "'.$scope.'") ');
 	}
 
-	public function addToken($token, $client_id , $user_id){
-		return $this->storage->execute('INSERT INTO token(id,client_id,expire,user_id) VALUES ("'.$token.'" , "'.$client_id.'" ,"'.( time() + self::TOKEN_EXPIRE ).'" ,"'.$user_id.'") ');
+	public function addToken($token, $client_id , $user_id,$scope = null){
+		return $this->storage->execute('INSERT INTO token(id,client_id,expire,user_id,scope) VALUES ("'.$token.'" , "'.$client_id.'" ,"'.( time() + self::TOKEN_EXPIRE ).'" ,"'.$user_id.'", "'.$scope.'") ');
 	}
 
 	public function deleteExpireToken($time){	

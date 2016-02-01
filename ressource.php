@@ -47,23 +47,22 @@
 		echo json_encode(array('error' => $error,'error_description ' => $error_description));
 	}
 	else{
-		//good job
 		
 
 		$params = array('tony'=>6+8);
 		
-	
-				
+		$data = $server->getStorage()->data("SELECT * FROM token WHERE id = '$token'");
+		if($data){
+			$user_id = $data['user_id'];
+			$scope = null;
+			$data_user = null;
+		}
+		else{
+		
+		}
+					
 
 		echo json_encode($params);
 	}
 			
-		
-		
-		
-		
-	
-	
-
-
 ?>

@@ -94,9 +94,6 @@
 		$response->send();
 	}
 	else{
-		
-		//good job
-		// $_SESSION['oauth'] = $_REQUEST;
 		if(!$server->userIsConnected()){
 			header('location:login.php?next='.urlencode($_SERVER['REQUEST_URI']));
 		}

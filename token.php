@@ -78,7 +78,8 @@ else{
 			}
 			else{
 				$token = $server->generateToken();
-				if($server->addToken($token,$client_id,$user_id)){
+				$scope = $data['scope'];
+				if($server->addToken($token,$client_id,$user_id,$scope)){
 					$params = array(
 								'access_token' => $token,
 								'refresh_token' => null,
