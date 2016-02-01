@@ -49,16 +49,23 @@
 	else{
 		
 
-		$params = array('tony'=>6+8);
+		$params = array();
 		
 		$data = $server->getStorage()->data("SELECT * FROM token WHERE id = '$token'");
 		if($data){
 			$user_id = $data['user_id'];
-			$scope = null;
-			$data_user = null;
+			$scope = $data['scope'];
+			$scopes = explode(',',$scope);
+			
+			$sql = "SELECT username,nom,prenom,id";
+			if(in_array('email',$scopes)){
+				$sql .= ',email';
+			}
+			$sql .= " FROM user WHERE id = '".$user_id."'";
+			$params = $server->getStorage()->data($sql);
 		}
 		else{
-		
+			$params = array('error' => 'error encored','error_description ' => 'an error has encored during we fetch the user data');
 		}
 					
 
