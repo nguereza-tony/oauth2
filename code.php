@@ -98,7 +98,9 @@
 			header('location:login.php?next='.urlencode($_SERVER['REQUEST_URI']));
 		}
 		
-		$code = $server->checkReadyCode($client_id,$_SESSION['user_id']);
+		
+		$user_id = $_SESSION['user_id'];
+		$code = $server->checkReadyCode($client_id,$user_id);
 		if($code){
 		$params = array(
 						'code' => $code,
@@ -115,6 +117,27 @@
 			
 		$response->redirect($redirect_uri);
 
+		}
+		
+		$user_id = $_SESSION['user_id'];
+		$code = $server->checkExistsCode($client_id,$user_id);
+		if($code){
+		$data = $server->getStorage()->data("SELECT * FROM code WHERE user_id = '$user_id'");
+		$server->updateExpireCode($data['id']);
+		$data = $server->getStorage()->data("SELECT * FROM code WHERE user_id = '$user_id'");
+		$params = array(
+						'code' => $data['id'],
+						'state' => $state
+						);
+		$url_info = parse_url($redirect_uri);
+		if(empty($url_info['query'])){
+			$redirect_uri .= '?';
+		}
+		else{
+			$redirect_uri .= '&';
+		}
+		$redirect_uri .= http_build_query($params);
+		$response->redirect($redirect_uri);
 		}
 
 

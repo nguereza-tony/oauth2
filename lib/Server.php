@@ -63,7 +63,6 @@ class Server {
 		$this->requests = $_REQUEST;
 		$this->servers = $_SERVER;
 		$this->deleteExpireToken(time());
-		$this->deleteExpireCode(time());
 	}
 	
 	public function request($name){
@@ -103,9 +102,7 @@ class Server {
 		return $this->storage->execute('DELETE FROM token WHERE expire + 60 <= "'.$time.'"');
 	}
 
-	public function deleteExpireCode($time){
-		return $this->storage->execute('DELETE FROM code WHERE expire + 10 <= "'.$time.'"');
-	}
+	
 
 	
 	public function checkClientId($id){
@@ -136,6 +133,16 @@ class Server {
 		$time = time();
 		$return = $this->storage->data("SELECT id FROM code WHERE client_id = '$client_id' AND user_id = '$user_id' AND expire > '$time' ");
 		return isset( $return['id'] )? $return['id']:null;
+	}
+	
+	public function updateCodeExpire($code_id){
+		$time = time()+self::CODE_EXPIRE;
+		return $this->storage->data("UPDATE code SET expire = '$time'  WHERE id = '$code_id' ");
+	}
+	
+	public function checkExistsCode($client_id,$user_id){
+		$return = $this->storage->count("SELECT * FROM code WHERE client_id = '$client_id' AND user_id = '$user_id' ");
+		return $return;
 	}
 	
 	public function userData($search){

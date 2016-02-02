@@ -35,7 +35,7 @@ if(!isset($result['error'])){
 }
 else{
 var_dump($result);
-
+$pi->clearAllSession();
 }
  }
 else{
@@ -52,7 +52,7 @@ else{
 	if(isset($token['access_token'])){
 		$pi->setAccessToken($token['access_token'] );
 		$result = $pi->get('user');
-		if(!$result['error']){
+		if(!isset($result['error'])){
 
 extract($result);
 echo "lastname : $prenom<br>";
