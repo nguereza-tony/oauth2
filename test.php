@@ -15,20 +15,23 @@ $pi = new PI(array(
 }
 $token = $pi->getAccessToken();
 if( $token ){ 	
-$r = $pi->post('http://localhost/test/oauth2server/register_user.php',array(
+/*$r = $pi->post('http://localhost/test/oauth2server/register_user.php',array(
 																			'register_user'=>'Register',
-																			'username' => '',
-																			'password' => '',
-																			'email' => ''
+																			'username' => 'prestige',
+																			'password' => 'azerty',
+																			'email' => 'yaindeprestige@gmail.com',
+																			'lastname' => 'YAINDE',
+																			'firstname' => 'Prestige'
 																			));
-$result = $pi->get('user');
-		if(!$result['error']){
+																			*/
 
-extract($result);
-echo "lastname : $prenom<br>";
-echo "firstname : $nom<br>";
-echo "email : $email<br>";
-echo "username : $username<br>";
+//var_dump($r);
+
+$result = $pi->get('user');
+if(!isset($result['error'])){
+	foreach($result as $key => $value){
+		echo "$key : $value<br>";
+	}
 }
 else{
 var_dump($result);
