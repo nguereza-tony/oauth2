@@ -19,9 +19,9 @@
 		const SIGNED_REQUEST_ALGORITHM = 'sha256';
 		
 		protected static $domain_maps = array(
-												'user' => 'http://localhost/test/oauth2server/user.php',
-												'token' => 'http://localhost/test/oauth2server/token.php',
-												'code' => 'http://localhost/test/oauth2server/code.php',
+												'user' => 'http://localhost:8080/oauth2server/user.php',
+												'token' => 'http://localhost:8080/oauth2server/token.php',
+												'code' => 'http://localhost:8080/oauth2server/code.php',
 											);
 		
 			
@@ -31,7 +31,7 @@
 		protected $accessToken = null;
 		protected $appSecret = null;
 		protected $state = null;
-		
+		 protected $code = null;
 		
 		protected $curlOptionsArray = array(
 											CURLOPT_FAILONERROR => true,
@@ -75,8 +75,18 @@
 			return $this;
 		}
 
+public function setCode($code){
+			$this->code= $code;
+			return $this;
+		}
+
+public function getCode(){
+			return $this->code;
+		}
+
 		public function setAccessToken($accessToken){
 			$this->accessToken= $accessToken;
+$this->setSession('accessToken', $accessToken );
 			return $this;
 		}
 		
@@ -90,7 +100,10 @@
 		}
 
 		public function getAccessToken(){
+if( $this->accessToken){
 			return $this->accessToken;
+}
+return $this->getSession('accessToken');
 		}
 		
 		public function getAppId(){
@@ -98,10 +111,32 @@
 		}
 
 		public function getState(){
-			if($this->state)
 				return $this->state;
-			return $this->state = sha1(uniqid(mt_rand(), true));
 		}
+
+public function csrf(){
+$this->state = sha1(uniqid(mt_rand(), true));
+$this->setSession('state', $this->state );
+}
+
+public function getSession($key){
+return isset($_SESSION['pi_'.$this->getAppId().'_'.$key])? $_SESSION[ 'pi_'.$this->getAppId().'_'.$key] :null;
+}
+
+public function setSession($key, $value){
+$_SESSION['pi_'.$this->getAppId().'_'.$key] = $value;
+}
+
+public function clearSession($key){
+unset($_SESSION['pi_'.$this->getAppId().'_'.$key]) ;
+}
+
+public function clearAllSession(){
+$parts = array('code','accessToken','state');
+foreach($parts as $key){
+$this->clearSession($key);
+}
+}
 		
 		public function get($name , array $params = array()){
 			$this->authentification();
@@ -214,7 +249,7 @@
 		
 
 		public function getAuthorizationCode(){
-			if(isset($_REQUEST['code']) && isset($_REQUEST['state'])){
+			if((isset($_REQUEST['code'] ))&&( isset($_REQUEST['state']) && $_REQUEST['state'] == $this->getSession('state') )){
 				return $_REQUEST['code'];
 			}
 				return false;
@@ -273,6 +308,7 @@
 			if(!empty($conf)){
 				$callback_url .= '?'.http_build_query($conf,null,'&');
 			}
+$this->csrf();
 			$defaults = array(
 								'redirect_uri' => $callback_url,
 								'client_id' => $this->getAppId(),

@@ -1,7 +1,7 @@
 <?php
 
 class Server {
-	const CODE_EXPIRE = 30 ; //in second
+	const CODE_EXPIRE = 300; //in second
 	const TOKEN_EXPIRE = 3600 ; //in second
 	protected $storage = null;
 	protected $grants = array();
