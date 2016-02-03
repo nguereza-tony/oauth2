@@ -123,7 +123,7 @@
 		$code = $server->checkExistsCode($client_id,$user_id);
 		if($code){
 		$data = $server->getStorage()->data("SELECT * FROM code WHERE user_id = '$user_id'");
-		$server->updateExpireCode($data['id']);
+		$server->updateCodeExpire($data['id']);
 		$data = $server->getStorage()->data("SELECT * FROM code WHERE user_id = '$user_id'");
 		$params = array(
 						'code' => $data['id'],

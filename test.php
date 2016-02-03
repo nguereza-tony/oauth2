@@ -54,11 +54,9 @@ else{
 		$result = $pi->get('user');
 		if(!isset($result['error'])){
 
-extract($result);
-echo "lastname : $prenom<br>";
-echo "firstname : $nom<br>";
-echo "email : $email<br>";
-echo "username : $username<br>";
+	foreach($result as $key => $value){
+		echo "$key : $value<br>";
+	}
 }
 else{
 var_dump($result);
